@@ -1,0 +1,23 @@
+node("agent")
+{
+
+def ami = params.ami_id
+deleteDir()
+stage("checkout")
+{
+   
+   git credentialsId: 'git-key', url: 'git@github.com:kush-m/demo-terraform.git'
+}
+stage("terraform init")
+{
+bat "terraform init"
+}
+
+stage ("terraform apply")
+{
+
+bat "terraform apply -var ami_id=$ami -auto-approve "
+bat "terraform output"
+
+}
+}
